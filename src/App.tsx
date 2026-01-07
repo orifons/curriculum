@@ -1,53 +1,77 @@
+import HeroSection from "@/components/sections/Hero";
+import ProjectsSection from "@/components/sections/Projects";
+import SkillsSection from "@/components/sections/Skills";
+import TechnologiesSection from "@/components/sections/Technologies";
+import ToolsSection from "@/components/sections/Tools";
+import Footer from "@/components/shared/Footer";
+import Navbar from "@/components/shared/Navbar";
+import PageLoader from "@/components/shared/PageLoader";
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import HeroSection from "./components/sections/Hero";
-import ProjectsSection from "./components/sections/Projects";
-import SkillsSection from "./components/sections/Skills";
-import TechnologiesSection from "./components/sections/Technologies";
-import ToolsSection from "./components/sections/Tools";
-import Footer from "./components/shared/Footer";
-import Navbar from "./components/shared/Navbar";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
+    const loadPage = async () => {
+      const minLoadTime = 1000;
+      const startTime = Date.now();
+
+      await Promise.all([
+        new Promise((resolve) => setTimeout(resolve, minLoadTime)),
+      ]);
+
+      const elapsedTime = Date.now() - startTime;
+      if (elapsedTime < minLoadTime) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, minLoadTime - elapsedTime)
+        );
+      }
+
       setIsLoading(false);
-    }, 2000);
+    };
+
+    loadPage();
   }, []);
 
-  if (isLoading)
-    return (
-      <div className="text-center">
-        <h1 className="text-2xl">LOADING</h1>
-      </div>
-    );
-
   return (
-    <div className="min-h-screen bg-background text-foreground bg-linear-to-br from-background via-background to-muted/20">
-      {/* Header/Navbar */}
-      <Navbar />
+    <>
+      <PageLoader isLoading={isLoading} />
+      <AnimatePresence mode="wait">
+        {!isLoading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className="min-h-screen bg-background text-foreground bg-linear-to-br from-background via-background to-muted/20"
+          >
+            {/* Header/Navbar */}
+            <Navbar />
 
-      <div className="container mx-auto px-4 py-12 max-w-6xl">
-        {/* Hero Section */}
-        <HeroSection />
+            <div className="container mx-auto px-4 py-12 max-w-6xl">
+              {/* Hero Section */}
+              <HeroSection />
 
-        {/* Skills Section */}
-        <SkillsSection />
+              {/* Skills Section */}
+              <SkillsSection />
 
-        {/* Technologies Section */}
-        <TechnologiesSection />
+              {/* Technologies Section */}
+              <TechnologiesSection />
 
-        {/* Tools Section */}
-        <ToolsSection />
+              {/* Tools Section */}
+              <ToolsSection />
 
-        {/* Projects Section */}
-        <ProjectsSection />
+              {/* Projects Section */}
+              <ProjectsSection />
 
-        {/* Footer */}
-        <Footer />
-      </div>
-    </div>
+              {/* Footer */}
+              <Footer />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
