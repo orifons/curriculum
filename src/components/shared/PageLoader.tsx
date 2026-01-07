@@ -1,5 +1,5 @@
-import { motion, AnimatePresence } from "framer-motion";
 import { Spinner } from "@/components/ui/spinner";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface PageLoaderProps {
   isLoading: boolean;
@@ -53,4 +53,3 @@ const PageLoader = ({ isLoading }: PageLoaderProps) => {
 };
 
 export default PageLoader;
-
