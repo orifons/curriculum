@@ -1,5 +1,5 @@
 export const personalInfo = {
-  fistName: "Oribel",
+  firstName: "Oribel",
   lastName: "Fonseca",
   title: "Desarrollador Web Full Stack",
   location: "Pinar del Rio, Cuba",
