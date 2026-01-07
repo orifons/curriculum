@@ -7,32 +7,10 @@ import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/Navbar";
 import PageLoader from "@/components/shared/PageLoader";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import useLoad from "./hooks/useLoad";
 
 const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const loadPage = async () => {
-      const minLoadTime = 1000;
-      const startTime = Date.now();
-
-      await Promise.all([
-        new Promise((resolve) => setTimeout(resolve, minLoadTime)),
-      ]);
-
-      const elapsedTime = Date.now() - startTime;
-      if (elapsedTime < minLoadTime) {
-        await new Promise((resolve) =>
-          setTimeout(resolve, minLoadTime - elapsedTime)
-        );
-      }
-
-      setIsLoading(false);
-    };
-
-    loadPage();
-  }, []);
+  const { isLoading } = useLoad();
 
   return (
     <>
